@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaSun, FaMoon, FaCog, FaCalendarAlt, FaPaperclip } from "react-icons/fa";
+import { FaSun, FaMoon, FaCog, FaUserCircle, FaTasks } from "react-icons/fa";
+import { FolderKanban } from "lucide-react";
 
 const TaskDetailForm = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -14,6 +15,8 @@ const TaskDetailForm = () => {
     description: "",
   });
 
+  const projects = ["Landing Page", "Marketing Campaign"];
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setForm({
@@ -23,43 +26,83 @@ const TaskDetailForm = () => {
   };
 
   return (
-    <div className={`${darkMode ? "bg-black text-white" : "bg-white text-black"} flex h-screen font-sans`}>
+    <div className={`${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"} flex h-screen font-sans`}>
       {/* Sidebar */}
-      <aside className="w-64 border-r border-gray-300 dark:border-gray-700 flex flex-col justify-between p-4">
-        <div>
-          <div className="text-2xl font-semibold mb-6">SynergySphere</div>
-          <nav className="flex flex-col gap-3 mb-6">
-            <button className="text-left hover:bg-gray-100 dark:hover:bg-gray-800 px-2 py-1 rounded transition">
-              Projects
-            </button>
-            <button className="text-left hover:bg-gray-100 dark:hover:bg-gray-800 px-2 py-1 rounded transition">
-              My Tasks
-            </button>
-          </nav>
+      <aside
+        className={`w-64 flex flex-col transition-colors duration-300 ${
+          darkMode ? "bg-gray-800 border-r border-gray-700" : "bg-white border-r border-gray-200"
+        }`}
+      >
+        {/* Branding */}
+        <div className="p-6 font-bold text-2xl tracking-tight">
+          <span
+            className={`px-3 py-1 rounded-lg shadow-sm ${
+              darkMode ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-900"
+            }`}
+          >
+            SynergySphere
+          </span>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1 p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">
-              <FaCog /> Settings
-            </button>
+        {/* Navigation */}
+        <nav className="flex-1 space-y-2 px-4">
+          {[{ label: "Projects", icon: <FaTasks /> }, { label: "My Tasks", icon: <FaUserCircle /> }].map(
+            (item, idx) => (
+              <button
+                key={idx}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
+                  darkMode ? "text-gray-200 hover:bg-gray-700" : "text-gray-800 hover:bg-gray-100"
+                }`}
+              >
+                {item.icon}
+                {item.label}
+              </button>
+            )
+          )}
+
+          <div className={`mt-6 text-xs uppercase ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Projects</div>
+
+          {projects.map((project, idx) => (
             <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition"
+              key={idx}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
+                darkMode ? "text-gray-200 hover:bg-gray-700" : "text-gray-800 hover:bg-gray-100"
+              }`}
             >
-              {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-500" />}
+              <FolderKanban size={18} />
+              {project}
+            </button>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div
+          className="p-4 flex flex-col gap-4 border-t transition-colors duration-300"
+          style={{ borderColor: darkMode ? "#444" : "#E5E7EB" }}
+        >
+          <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center gap-2">
+              <FaCog />
+              Settings
+            </div>
+            <button onClick={() => setDarkMode(!darkMode)} className="hover:text-orange-400">
+              {darkMode ? "☀" : "🌙"}
             </button>
           </div>
 
           <div className="flex items-center gap-3 mt-2">
             <img
               src="https://i.pravatar.cc/40"
-              alt="User Avatar"
-              className="w-10 h-10 rounded-full"
+              alt="avatar"
+              className={`w-10 h-10 rounded-full border transition-colors duration-300 ${
+                darkMode ? "border-gray-500" : "border-gray-400"
+              }`}
             />
             <div>
-              <div className="text-sm font-medium">Test User</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">user@mail</div>
+              <p className="text-sm font-semibold">Test User</p>
+              <p className={`text-xs transition-colors duration-300 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                user@mail
+              </p>
             </div>
           </div>
         </div>
@@ -82,7 +125,7 @@ const TaskDetailForm = () => {
             <button className="px-4 py-1 rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
               Discard
             </button>
-            <button className="px-4 py-1 rounded bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition">
+            <button className="px-4 py-1 rounded bg-orange-500 text-white hover:bg-orange-600 transition">
               Save
             </button>
           </div>
@@ -90,7 +133,7 @@ const TaskDetailForm = () => {
           {/* Task Form Fields */}
           <div className="flex flex-col gap-4">
             <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-400">Task Name</label>
+              <label className="block mb-1">Task Name</label>
               <input
                 type="text"
                 name="taskName"
@@ -101,7 +144,7 @@ const TaskDetailForm = () => {
             </div>
 
             <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-400">Assigned To</label>
+              <label className="block mb-1">Assigned To</label>
               <input
                 type="text"
                 name="assignedTo"
@@ -112,7 +155,7 @@ const TaskDetailForm = () => {
             </div>
 
             <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-400">Tags</label>
+              <label className="block mb-1">Tags</label>
               <input
                 type="text"
                 name="tags"
@@ -122,11 +165,8 @@ const TaskDetailForm = () => {
               />
             </div>
 
-            {/* Improved Date Picker */}
-            <div className="flex flex-col gap-1">
-              <label className="block mb-1 text-gray-700 dark:text-gray-400 flex items-center gap-1">
-                <FaCalendarAlt /> Deadline
-              </label>
+            <div>
+              <label className="block mb-1 flex items-center gap-1">Deadline</label>
               <input
                 type="date"
                 name="deadline"
@@ -136,9 +176,8 @@ const TaskDetailForm = () => {
               />
             </div>
 
-            {/* Priority */}
             <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-400">Priority</label>
+              <label className="block mb-1">Priority</label>
               <div className="flex gap-4">
                 {["Low", "Medium", "High"].map((p) => (
                   <label key={p} className="flex items-center gap-1">
@@ -150,7 +189,11 @@ const TaskDetailForm = () => {
                       onChange={handleChange}
                       className="accent-black dark:accent-white"
                     />
-                    <span className={`px-2 py-0.5 rounded text-white ${p === "Low" ? "bg-green-500" : p === "Medium" ? "bg-yellow-500" : "bg-red-500"}`}>
+                    <span
+                      className={`px-2 py-0.5 rounded text-white ${
+                        p === "Low" ? "bg-green-500" : p === "Medium" ? "bg-yellow-500" : "bg-red-500"
+                      }`}
+                    >
                       {p}
                     </span>
                   </label>
@@ -158,9 +201,8 @@ const TaskDetailForm = () => {
               </div>
             </div>
 
-            {/* Status */}
             <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-400">Status</label>
+              <label className="block mb-1">Status</label>
               <select
                 name="status"
                 value={form.status}
@@ -174,25 +216,16 @@ const TaskDetailForm = () => {
               </select>
             </div>
 
-            {/* Improved Attachment Section */}
-            <div className="flex flex-col gap-1">
-              <label className="block mb-1 text-gray-700 dark:text-gray-400 flex items-center gap-1">
-                <FaPaperclip /> Attachment
-              </label>
+            <div>
+              <label className="block mb-1 flex items-center gap-1">Attachment</label>
               <label className="flex items-center gap-2 px-4 py-2 border-2 border-dashed rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
                 <span>{form.attachment ? form.attachment.name : "Click to upload file"}</span>
-                <input
-                  type="file"
-                  name="attachment"
-                  onChange={handleChange}
-                  className="hidden"
-                />
+                <input type="file" name="attachment" onChange={handleChange} className="hidden" />
               </label>
             </div>
 
-            {/* Description */}
             <div>
-              <label className="block mb-1 text-gray-700 dark:text-gray-400">Description</label>
+              <label className="block mb-1">Description</label>
               <textarea
                 name="description"
                 value={form.description}
