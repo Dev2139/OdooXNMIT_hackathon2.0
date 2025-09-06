@@ -2,7 +2,7 @@ import React from 'react'
 // import Auth from './components/LoginSignUp/Auth';
 // import Dashboard from './components/Dashboard/Dashboard';
 import ProjectDetail from './components/ProjectPage/ProjectPage';
-import TaskDetail from './components/TaskPage/TaskDetail';
+import TaskDetail from './components/TaskPage/TaskCreation';
 
 
 const App = () => {
